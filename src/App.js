@@ -2,7 +2,7 @@ import React from "react";
 import {Routes, Route} from 'react-router-dom'
 import Home from './pages/Home';
 import SignIn from './pages/SignIn';
-import Dashboard from './pages/Dashboard';
+import User from './pages/User';
 import Error404 from './pages/Error404';
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />}/>
         <Route path="/signin" element={<SignIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/user" element={<User />} />
         <Route path='*' element={<Error404 />}/>
       </Routes> 
       <Footer />

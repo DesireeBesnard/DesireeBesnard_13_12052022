@@ -1,10 +1,13 @@
+import '../../App.css'
+import './style.css'
+
 function Footer() {
 
     const date = new Date().getFullYear()
 
     return (
-        <footer class="footer">
-            <p class="footer-text">Copyright {date} Argent Bank</p>
+        <footer className="footer">
+            <p className="footer-text">Copyright {date} Argent Bank</p>
         </footer>
     )
 }
