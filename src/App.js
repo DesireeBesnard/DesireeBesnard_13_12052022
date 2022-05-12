@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Error404 from './pages/Error404';
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='*' element={<Error404 />}/>
       </Routes> 
+      <Footer />
     </div>
   );
 }
