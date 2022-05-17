@@ -9,10 +9,11 @@ const login = (email, password) => {
             "password": password
         })
         .then((response) => {
-            if(response.token) {
-                localStorage.setItem("user", JSON.stringify(response))
+            console.log(response)
+            if(response.data.token) {
+                localStorage.setItem("user", JSON.stringify(response.data))
             }
-            return response
+            return response.data
         })
 }
 
@@ -20,7 +21,6 @@ const logout = () => {
     localStorage.removeItem("user")
 }
 
-module.export = {
-    login,
-    logout
-}
+const authService = {login, logout}
+
+export default authService

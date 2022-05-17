@@ -1,7 +1,12 @@
 import {Link} from 'react-router-dom'
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/auth";
 import './style.css'
 
 function SignIn() {
+
+  const dispatch = useDispatch();
+
   return (
     <main className="main bg-dark">
       <section className="sign-in-content">
@@ -25,7 +30,9 @@ function SignIn() {
             <label htmlFor="remember-me">Remember me</label>
           </div>
 
-          <button className="sign-in-button">Sign In</button>
+          <button
+            className="sign-in-button"
+            onClick={() => dispatch(login())}>Sign In</button>
         </form>
 
       </section>
