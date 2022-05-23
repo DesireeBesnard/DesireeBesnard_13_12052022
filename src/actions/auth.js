@@ -1,8 +1,8 @@
 import { login_success, login_fail, onlogout } from "./types"
-import AuthService from "../services/api/auth.service"
+import authService from "../services/api/auth.service"
 
 export const login = (email, password) => (dispatch) => {
-    return AuthService.login(email, password).then(
+    return authService.login(email, password).then(
         (data) => {
             dispatch({
                 type: login_success,
@@ -14,13 +14,14 @@ export const login = (email, password) => (dispatch) => {
             dispatch({
                 type: login_fail
             })
+            console.log("authentification échouée")
             return Promise.reject()
         }
     )
 }
 
 export const logout = () => (dispatch) => {
-    AuthService.logout()
+    authService.logout()
     dispatch({
         type: onlogout
     })
