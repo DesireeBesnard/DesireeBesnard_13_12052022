@@ -1,21 +1,43 @@
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import userService from "../../features/userService/userService"
 import './style.css'
 
 function User() {
 
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [isLoading, setLoading] = useState(false)
+
+  //redirect if user not connected
   const { user } = useSelector(
-    (state) => state.auth
+      (state) => state.auth
   )
-  console.log(user)
-  if ( !user ) {
-    return <Navigate to ="/" />
-  }
+
+  useEffect(() => {
+    if ( !user ) {
+      return <Navigate to ="/" />
+    }
+    setLoading(true)
+    userService.getProfile()
+      .then(response => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        setFirstName(response.data.body.firstName)
+        setLastName(response.data.body.lastName)
+        user['firstName'] = firstName
+        user['lastName'] = response.data.body.lastName
+        localStorage.setItem("user", JSON.stringify(user))
+      })
+    if(lastName !== "") {
+      setLoading(false)
+    }
+  }, [user, firstName, lastName])
 
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
+        <h1>Welcome back<br />{firstName} {lastName}</h1>
         <button className="edit-button">Edit Name</button>
       </div>
       <h2 className="sr-only">Accounts</h2>
