@@ -1,53 +1,53 @@
-import React, { useState} from "react"
-import { Redirect } from 'react-router-dom'
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../actions/auth";
+import React, { useEffect, useState} from "react"
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from "react-router-dom"
+import { login, reset } from "../../features/auth/authSlice"
 import './style.css'
 
 function SignIn(props) {
 
-  const [email, setUserEmail] = useState("");
-  const [password, setUserPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { isLoggedIn } = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  })
 
-  const onChangeEmail = (e) => {
-    const email = e.target.value
-    setUserEmail(email)
+  const {email, password} = formData
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  )
+
+
+
+  useEffect(() => {
+    if (isSuccess || user) {
+      navigate('/user')
+    }
+
+    dispatch(reset())
+  }, [user, isError, isSuccess, message, navigate, dispatch])
+
+
+
+  const onChange = e => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }))
   }
 
-  const onChangePassword = (e) => {
-    const password = e.target.value
-    setUserPassword(password)
-  }
-
-  const handleLogin = (e) => {
-    let validEmail = false
-    let emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-    let validPassword = false
-
+  const onSubmit = e => {
     e.preventDefault()
-    setLoading(true)
 
-    if (email.trim().match(emailRegex)) {
-      validEmail = true
+    const userData = {
+      email: email,
+      password: password
     }
 
-    if (password.trim() !== "") {
-      validPassword = true
-    }
-
-    if ((validEmail === true ) && (validPassword === true)) {
-      dispatch(login(email, password))
-        .then(() => {
-          props.history.push("/user")
-          window.location.reload()
-        })
-        .catch(() => {
-          setLoading(false)
-        })
-    }
+    dispatch(login(userData))
   }
 
   return (
@@ -56,16 +56,16 @@ function SignIn(props) {
         <i className="fa fa-user-circle sign-in-icon"></i>
         <h1>Sign In</h1>
 
-        <form>
+        <form onSubmit={onSubmit}>
 
           <div className="input-wrapper">
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" onChange={onChangeEmail} />
+            <input type="text" id="username" name="email" value={email} onChange={onChange}/>
           </div>
 
           <div className="input-wrapper">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={onChangePassword} />
+            <input type="password" id="password" name="password" value={password} onChange={onChange}  />
           </div>
 
           <div className="input-remember">
@@ -73,12 +73,9 @@ function SignIn(props) {
             <label htmlFor="remember-me">Remember me</label>
           </div>
 
-          {/* <button
-  className="sign-in-button"
-  onClick={() => dispatch(login())}>Sign In</button> */}
           <button
             className="sign-in-button"
-            onSubmit={handleLogin}>Sign In</button>
+            type="submit">Sign In</button>
         </form>
 
       </section>

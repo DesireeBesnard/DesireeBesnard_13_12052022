@@ -1,8 +1,16 @@
-import {NavLink, Link} from 'react-router-dom'
+import {NavLink, Link, useNavigate} from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout, reset } from "../../features/auth/authSlice"
 import '../../App.css'
 import './style.css'
 
 function NavBar() {
+
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { user } = useSelector(state => state.auth)
+    console.log(user)
+
     return (
         <nav className="main-nav">
             <Link  to='/' className="main-nav-logo" >
@@ -14,6 +22,22 @@ function NavBar() {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             <div>
+                {user ? (
+                    <>
+                        <NavLink className="main-nav-item" to="/user">
+                            <i class="fa fa-user-circle"></i> Tony
+                        </NavLink> 
+                        <NavLink className="main-nav-item" to="/">
+                            <i class="fa fa-sign-out"></i> Sign Out
+                        </NavLink> 
+                    </>
+                ) : (
+                    <NavLink className="main-nav-item" to="/signIn">
+                        <i className="fa fa-user-circle"></i>Sign In
+                    </NavLink> 
+                )}
+
+
                 <NavLink className="main-nav-item" to="/signIn">
                     <i className="fa fa-user-circle"></i>
                     Sign In
@@ -24,4 +48,3 @@ function NavBar() {
   }
   
   export default NavBar;
-  
