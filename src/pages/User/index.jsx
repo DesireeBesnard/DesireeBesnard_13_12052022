@@ -1,6 +1,17 @@
+import { Navigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import './style.css'
 
 function User() {
+
+  const { user } = useSelector(
+    (state) => state.auth
+  )
+  console.log(user)
+  if ( !user ) {
+    return <Navigate to ="/" />
+  }
+
   return (
     <main className="main bg-dark">
       <div className="header">
