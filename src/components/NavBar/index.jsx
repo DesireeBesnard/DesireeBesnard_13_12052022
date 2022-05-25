@@ -9,7 +9,12 @@ function NavBar() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
-    console.log(user)
+
+    const onLogout = () => {
+        dispatch(logout())
+        dispatch(reset())
+        navigate("/")
+    }
 
     return (
         <nav className="main-nav">
@@ -25,23 +30,17 @@ function NavBar() {
                 {user ? (
                     <>
                         <NavLink className="main-nav-item" to="/user">
-                            <i class="fa fa-user-circle"></i> Tony
+                            <i className="fa fa-user-circle"></i> Tony
                         </NavLink> 
-                        <NavLink className="main-nav-item" to="/">
-                            <i class="fa fa-sign-out"></i> Sign Out
-                        </NavLink> 
+                        <button className="main-nav-item" to="/" onClick={onLogout}>
+                            <i className="fa fa-sign-out"></i> Sign Out
+                        </button> 
                     </>
                 ) : (
                     <NavLink className="main-nav-item" to="/signIn">
                         <i className="fa fa-user-circle"></i>Sign In
                     </NavLink> 
                 )}
-
-
-                <NavLink className="main-nav-item" to="/signIn">
-                    <i className="fa fa-user-circle"></i>
-                    Sign In
-                </NavLink>
             </div>
         </nav>
     )

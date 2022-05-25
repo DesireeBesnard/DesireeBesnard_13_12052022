@@ -3,7 +3,6 @@ import axios from 'axios'
 const API_URL = "http://localhost:3001/api/v1/user"
 
 const login = async (userData) => {
-    console.log(userData)
     const response = await axios.post(API_URL+"/login", {
         "email": userData.email,
         "password": userData.password
@@ -14,6 +13,10 @@ const login = async (userData) => {
     }
 
     return response.data
+}
+
+const getProfile = async() => {
+    const response = await axios.post(API_URL+"profile")
 }
 
 const logout = () => {
