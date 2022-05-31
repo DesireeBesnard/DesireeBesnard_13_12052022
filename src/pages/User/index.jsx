@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import userService from "../../features/userService/userService"
 import './style.css'
 
 function User() {
 
+  const navigate = useNavigate()
+
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-  const [isLoading, setLoading] = useState(false)
 
   //redirect if user not connected
   const { user } = useSelector(
-      (state) => state.auth
+    (state) => state.auth
   )
 
   useEffect(() => {
-    if ( !user ) {
-      return <Navigate to ="/" />
+    if (!user) {
+      navigate("/")
+      return
     }
-    setLoading(true)
+
     userService.getProfile()
       .then(response => {
         let user = JSON.parse(localStorage.getItem("user"))
@@ -29,16 +31,46 @@ function User() {
         user['lastName'] = response.data.body.lastName
         localStorage.setItem("user", JSON.stringify(user))
       })
-    if(lastName !== "") {
-      setLoading(false)
-    }
-  }, [user, firstName, lastName])
+  }, [navigate, user, firstName, lastName])
+
+  const showEditForm = () => {
+    const displayName = document.querySelector('.display-name')
+    const editForm = document.querySelector('.edit-name')
+    displayName.classList.toggle('d-none')
+    editForm.classList.toggle('d-none')
+  }
 
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />{firstName} {lastName}</h1>
-        <button className="edit-button">Edit Name</button>
+
+        <h1>Welcome back</h1>
+
+        <div className='display-name'>
+          <p>{firstName} {lastName}</p>
+          <button type='button' className="edit-button" onClick={showEditForm}>Edit Name</button>
+        </div>
+
+        <div className='edit-name d-none'>
+          <form>
+            <div className='formdata d-flex'>
+              <div className="input-wrapper">
+                <label htmlFor="firstname" className='d-none'>Firstname</label>
+                <input type="text" id="firstname" name="firstname" placeholder={firstName} />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="lastname" className='d-none'>Lastname</label>
+                <input type="text" id="firstname" name="firstname" placeholder={lastName} />
+              </div>
+            </div>
+            <div className='edit-buttons d-flex'>
+              <button type='submit'>Save</button>
+              <button type='button' onClick={showEditForm }>Cancel</button>
+            </div>
+
+          </form>
+        </div>
+
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">

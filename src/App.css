@@ -13,6 +13,14 @@ body {
   min-height: 100vh;
 }
 
+.d-none {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+}
+
 .main {
   flex: 1;
 }
