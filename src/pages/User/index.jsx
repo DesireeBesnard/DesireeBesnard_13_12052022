@@ -16,6 +16,11 @@ function User() {
     (state) => state.auth
   )
 
+  let userData = {
+    firstName: firstName,
+    lastName: lastName
+  }
+
   useEffect(() => {
     if (!user) {
       navigate("/")
@@ -40,6 +45,29 @@ function User() {
     editForm.classList.toggle('d-none')
   }
 
+  const onChange = e => {
+    if (e.target.name === 'firstname') {
+      userData.firstName = e.target.value
+    } else {
+      userData.lastName = e.target.value
+    }
+  }
+
+  const onSubmit = e => {
+    e.preventDefault()
+
+    userService.editProfile(userData)
+      .then(response => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        user['firstName'] = response.data.body.firstName
+        user['lastName'] = response.data.body.lastName
+        localStorage.setItem("user", JSON.stringify(user))
+        setFirstName(response.data.body.firstName)
+        setLastName(response.data.body.lastName)
+        showEditForm()
+      })
+  }
+
   return (
     <main className="main bg-dark">
       <div className="header">
@@ -52,15 +80,15 @@ function User() {
         </div>
 
         <div className='edit-name d-none'>
-          <form>
+          <form onSubmit={onSubmit}>
             <div className='formdata d-flex'>
               <div className="input-wrapper">
                 <label htmlFor="firstname" className='d-none'>Firstname</label>
-                <input type="text" id="firstname" name="firstname" placeholder={firstName} />
+                <input type="text" id="firstname" name="firstname" placeholder={firstName} onChange={onChange} />
               </div>
               <div className="input-wrapper">
                 <label htmlFor="lastname" className='d-none'>Lastname</label>
-                <input type="text" id="firstname" name="firstname" placeholder={lastName} />
+                <input type="text" id="firstname" name="lastname" placeholder={lastName} onChange={onChange} />
               </div>
             </div>
             <div className='edit-buttons d-flex'>
