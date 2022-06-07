@@ -30,7 +30,7 @@ function NavBar() {
                 {user ? (
                     <>
                         <NavLink className="main-nav-item" to="/user">
-                            <i className="fa fa-user-circle"></i> Tony
+                            <i className="fa fa-user-circle"></i> {user.firstName}
                         </NavLink> 
                         <button className="main-nav-item" to="/" onClick={onLogout}>
                             <i className="fa fa-sign-out"></i> Sign Out

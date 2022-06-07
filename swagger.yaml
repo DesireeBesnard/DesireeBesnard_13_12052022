@@ -71,6 +71,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
       produces:
@@ -94,6 +95,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
         - in: body
@@ -124,6 +126,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
       produces:
@@ -148,13 +151,12 @@ paths:
       parameters:
         - in: path
           name: transactionId
+          description: Id of transaction
           required: true
           type: integer
-          descripion: Transaction ID
-          schema:
-            $ref: '#/definitions/TransactionEdition'
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
       produces:
@@ -163,9 +165,11 @@ paths:
         '200':
           description: User transaction retrieved successfully
           schema:
-            $ref: '#/definitions/TransactionReponse'
+            $ref: '#/definitions/Transaction'
         '400':
           description: Invalid Fields
+        '404':
+          description: Unknown ressource
         '500':
           description: Internal Server Error
     put:
@@ -178,8 +182,13 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          type: string
           description: Attach Bearer JWT token
           required: true
+        - in: path
+          name: transactionId
+          required: true
+          type: integer
         - in: body
           name: body
           description: Update user transaction
@@ -192,7 +201,7 @@ paths:
         '200':
           description: User transaction updated successfully
           schema:
-            $ref: '#/definitions/TransactionReponse'
+            $ref: '#/definitions/Transaction'
         '400':
           description: Invalid Fields
         '500':
@@ -257,26 +266,7 @@ definitions:
         type: string
       lastName:
         type: string
-  TransactionsReponse:
-    type: object
-    properties:
-      status:
-        type: integer
-      message:
-        type: string
-      body:
-        type: object
-        properties:
-          transactions:
-            type: array
-  TransactionEdition:
-    type: object
-    properties:
-      category:
-        type: string
-      notes: 
-        type: string
-  TransactionReponse:
+  Transaction:
     type: object
     properties:
       status:
@@ -300,5 +290,24 @@ definitions:
             type: string
           notes:
             type: string
+  TransactionsReponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          transactions:
+            type: object
+  TransactionEdition:
+    type: object
+    properties:
+      category:
+        type: string
+      notes: 
+        type: string
 
 
