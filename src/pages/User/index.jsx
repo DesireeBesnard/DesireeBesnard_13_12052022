@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import userService from "../../features/userService/userService"
+import { useSelector, useDispatch } from 'react-redux'
+import userService from "../../features/user/userService"
+import { reset, editProfile } from "../../features/user/userSlice"
 import './style.css'
 
 function User() {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
-
-  //redirect if user not connected
-  const { user } = useSelector(
-    (state) => state.auth
-  )
 
   let userData = {
     firstName: firstName,
     lastName: lastName
   }
+
+  //redirect if user not connected
+  const { user } = useSelector(
+    (state) => state.auth
+  )
 
   useEffect(() => {
     if (!user) {
@@ -56,7 +58,7 @@ function User() {
   const onSubmit = e => {
     e.preventDefault()
 
-    userService.editProfile(userData)
+    /*userService.editProfile(userData)
       .then(response => {
         let user = JSON.parse(localStorage.getItem("user"))
         user['firstName'] = response.data.body.firstName
@@ -65,7 +67,9 @@ function User() {
         setFirstName(response.data.body.firstName)
         setLastName(response.data.body.lastName)
         showEditForm()
-      })
+      })*/
+      dispatch(editProfile(userData))
+      dispatch(reset())
   }
 
   return (

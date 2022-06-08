@@ -206,7 +206,66 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-        
+  /user/transactions/{transactionId}/category:
+    delete:  
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Transaction API
+      description: Deleting transaction category
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: transactionId
+          description: Id of transaction
+          required: true
+          type: integer
+      produces:
+        - application/json   
+      responses:
+        '200':
+          description: Transaction category deleted successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/transactions/{transactionId}/notes:
+    delete:  
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Transaction API
+      description: Deleting transaction notes
+      parameters:
+        - in: header
+          name: Authorization
+          type: string
+          description: Attach Bearer JWT token
+          required: true
+        - in: path
+          name: transactionId
+          description: Id of transaction
+          required: true
+          type: integer
+      produces:
+        - application/json   
+      responses:
+        '200':
+          description: Transaction notes deleted successfully
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error        
 
 securityDefinitions:
   Bearer:
@@ -309,5 +368,6 @@ definitions:
         type: string
       notes: 
         type: string
+  
 
 

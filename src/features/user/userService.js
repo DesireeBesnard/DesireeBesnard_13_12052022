@@ -22,8 +22,7 @@ const editProfile = async (userData) => {
     }, {
         headers: authHeader()
     })
-
-    return await response
+    return await response.data
 }
 
 const userService = {

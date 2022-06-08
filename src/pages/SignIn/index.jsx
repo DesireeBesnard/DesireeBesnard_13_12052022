@@ -21,7 +21,7 @@ function SignIn(props) {
   )
 
 
-
+// If user already connected redirect to user dashboard
   useEffect(() => {
     if (isSuccess || user) {
       navigate('/user')

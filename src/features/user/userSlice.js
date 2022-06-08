@@ -1,5 +1,5 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import authService from './authService'
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import userService from './userService'
 
 //Get user from localStorage
 const user = JSON.parse(localStorage.getItem("user"))
@@ -13,11 +13,11 @@ const initialState = {
     message: ""
 }
 
-export const login = createAsyncThunk(
-    'auth/login',
-    async (user, thunkAPI) => {
+export const editProfile = createAsyncThunk(
+    'user/editProfile',
+    async(userData, thunkAPI) => {
         try {
-            return await authService.login(user)
+            return await userService.editProfile(userData)
         } catch (error) {
             const message = ( error.response.data.message ) || error.message || error.toString()
             return thunkAPI.rejectWithValue(message)
@@ -25,17 +25,11 @@ export const login = createAsyncThunk(
     }
 )
 
-export const logout = createAsyncThunk("auth/logout",
-    async () => {
-        await authService.logout()
-    }
-)
-
-export const authSlice = createSlice({
-    name: 'auth',
+export const userSlice = createSlice({
+    name: 'user',
     initialState,
     reducers: {
-        reset: (state) => {
+        reset: state => {
             state.isLoading = false
             state.isError = false
             state.isSuccess = false
@@ -44,25 +38,24 @@ export const authSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(login.pending, (state) => {
+            .addCase(editProfile.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(login.fulfilled, (state, action) => {
+            .addCase(editProfile.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.user = action.payload
+                console.log(action.payload)
+                state.user.firstName = action.payload
+                state.user.lastName = action.payload
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(editProfile.rejected, (state, action) => {
                 state.isLoading = false
                 state.isError = true
-                state.message = action.payload
-                state.user = null
-            })
-            .addCase(logout.fulfilled, (state) => {
+                state.message = action.payload.data.message
                 state.user = null
             })
     }
 })
 
-export const {reset} = authSlice.actions
-export default authSlice.reducer
+export const { reset } = userSlice.actions
+export default userSlice.reducer
