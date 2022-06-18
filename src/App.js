@@ -1,3 +1,6 @@
+import useUnload from './hooks/useUnload';
+import { useDispatch } from 'react-redux';
+import { logout } from "./features/auth/authSlice"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer'
@@ -6,8 +9,20 @@ import SignIn from './pages/SignIn'
 import User from './pages/User'
 import Error404 from './pages/Error404'
 import './App.css';
+import { useSelector } from 'react-redux';
 
 function App() {
+
+  const { rememberMe } = useSelector( state => state.auth )
+  const dispatch = useDispatch()
+
+  useUnload( e => {
+    e.preventDefault()
+    if (rememberMe === false) {
+      dispatch(logout())
+    }
+  })
+
   return (
     <Router>
       <div className='App'>

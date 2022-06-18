@@ -7,6 +7,7 @@ const user = JSON.parse(localStorage.getItem("user"))
 
 const initialState = {
     user: user ? user : null,
+    rememberMe: false,
     isError: false,
     isSuccess: false,
     isLoading: false,
@@ -40,6 +41,9 @@ export const authSlice = createSlice({
             state.isError = false
             state.isSuccess = false
             state.message = ""
+        },
+        persist: (state) => {
+            state.rememberMe = !state.rememberMe
         }
     },
     extraReducers: builder => {
@@ -65,5 +69,6 @@ export const authSlice = createSlice({
     }
 })
 
-export const {reset} = authSlice.actions
+export const { reset } = authSlice.actions
+export const { persist } = authSlice.actions
 export default authSlice.reducer

@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom"
-import { login, reset } from "../../features/auth/authSlice"
+import { login, reset, persist } from "../../features/auth/authSlice"
 import './style.css'
 
 function SignIn(props) {
@@ -35,6 +35,10 @@ function SignIn(props) {
     }))
   }
 
+  const rememberChecked = () => {
+    dispatch(persist())
+  }
+
   const onSubmit = e => {
     e.preventDefault()
     const userData = {
@@ -63,7 +67,7 @@ function SignIn(props) {
           </div>
 
           <div className="input-remember">
-            <input type="checkbox" id="remember-me" />
+            <input type="checkbox" id="remember-me" onChange={rememberChecked}/>
             <label htmlFor="remember-me">Remember me</label>
           </div>
 
