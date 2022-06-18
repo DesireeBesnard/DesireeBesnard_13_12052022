@@ -1,5 +1,5 @@
-import useUnload from './hooks/useUnload';
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "./features/auth/authSlice"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
@@ -9,19 +9,28 @@ import SignIn from './pages/SignIn'
 import User from './pages/User'
 import Error404 from './pages/Error404'
 import './App.css';
-import { useSelector } from 'react-redux';
 
 function App() {
 
-  const { rememberMe } = useSelector( state => state.auth )
   const dispatch = useDispatch()
+  const { rememberMe } = useSelector( state => state.auth )
 
-  useUnload( e => {
-    e.preventDefault()
-    if (rememberMe === false) {
-      dispatch(logout())
+  useEffect(() => {
+
+    const handleTabClose = e => {
+      e.preventDefault()
+      if (rememberMe === false) {
+        dispatch(logout())
+      }
     }
-  })
+
+    window.addEventListener('beforeunload', handleTabClose);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleTabClose);
+    };
+  }, [rememberMe, dispatch])
+
 
   return (
     <Router>

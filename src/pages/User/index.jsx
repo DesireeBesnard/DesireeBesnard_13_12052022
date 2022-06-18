@@ -25,18 +25,7 @@ function User() {
       navigate("/")
       return
     }
-
-    /*userService.getProfile()
-      .then(response => {
-        let user = JSON.parse(localStorage.getItem("user"))
-        //setFirstName(response.data.body.firstName)
-        //setLastName(response.data.body.lastName)
-        //user['firstName'] = firstName
-        //user['lastName'] = response.data.body.lastName
-        localStorage.setItem("user", JSON.stringify(user))
-      })*/
-    dispatch(getProfile())
-  }, [dispatch, navigate, user])
+  }, [navigate, user])
 
   const showEditForm = () => {
     const displayName = document.querySelector('.display-name')
@@ -55,21 +44,9 @@ function User() {
 
   const onSubmit = e => {
     e.preventDefault()
-
-    /*userService.editProfile(userData)
-      .then(response => {
-        let user = JSON.parse(localStorage.getItem("user"))
-        user['firstName'] = response.data.body.firstName
-        user['lastName'] = response.data.body.lastName
-        localStorage.setItem("user", JSON.stringify(user))
-        setFirstName(response.data.body.firstName)
-        setLastName(response.data.body.lastName)
-        showEditForm()
-      })*/
-      dispatch(editProfile(userData))
-      console.log("J'ai édité normalement")
-      showEditForm()
-      dispatch(reset())
+    dispatch(editProfile(userData))
+    showEditForm()
+    dispatch(reset())
   }
 
   return (
@@ -84,7 +61,8 @@ function User() {
         </div>
 
         <div className='edit-name d-none'>
-          <form onSubmit={onSubmit}>
+
+          <form className='form_edition' onSubmit={onSubmit}>
             <div className='formdata d-flex'>
               <div className="input-wrapper">
                 <label htmlFor="firstname" className='d-none'>Firstname</label>

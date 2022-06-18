@@ -1,6 +1,8 @@
-import {NavLink, Link, useNavigate} from 'react-router-dom'
+import { useEffect } from 'react'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, reset } from "../../features/auth/authSlice"
+import { getProfile } from '../../features/user/userSlice'
 import '../../App.css'
 import './style.css'
 
@@ -10,6 +12,12 @@ function NavBar() {
     const dispatch = useDispatch()
     const { user } = useSelector(state => state.auth)
     const { firstName } = useSelector( state => state.user)
+
+    useEffect(() => {
+        if ((user) && (firstName === "")) {
+            dispatch(getProfile())
+        }
+    })
 
     const onLogout = () => {
         dispatch(logout())

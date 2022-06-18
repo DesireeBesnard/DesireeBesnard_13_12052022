@@ -11,6 +11,12 @@
     padding: 10px;
 }
 
+.form_edition {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 
 .account {
     display: flex;
