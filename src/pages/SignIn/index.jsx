@@ -6,19 +6,16 @@ import './style.css'
 
 function SignIn(props) {
 
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { user, isError, isSuccess, message } = useSelector(
+    state => state.auth
+  )
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   })
-
   const {email, password} = formData
-
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  const { user, isError, isSuccess, message } = useSelector(
-    (state) => state.auth
-  )
 
 
 // If user already connected redirect to user dashboard
@@ -31,7 +28,6 @@ function SignIn(props) {
   }, [user, isError, isSuccess, message, navigate, dispatch])
 
 
-
   const onChange = e => {
     setFormData((prevState) => ({
       ...prevState,
@@ -41,12 +37,10 @@ function SignIn(props) {
 
   const onSubmit = e => {
     e.preventDefault()
-
     const userData = {
       email: email,
       password: password
     }
-
     dispatch(login(userData))
   }
 

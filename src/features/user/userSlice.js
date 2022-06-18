@@ -6,12 +6,25 @@ const user = JSON.parse(localStorage.getItem("user"))
 
 
 const initialState = {
-    user: user ? user : null,
+    firstName: "",
+    lastName: "",
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: ""
 }
+
+export const getProfile = createAsyncThunk(
+    'user/getProfile',
+    async (thunkAPI) => {
+        try {
+            return await userService.getProfile()
+        } catch (error) {
+            const message = ( error.response.data.message ) || error.message || error.toString()
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
 
 export const editProfile = createAsyncThunk(
     'user/editProfile',
@@ -38,6 +51,20 @@ export const userSlice = createSlice({
     },
     extraReducers: builder => {
         builder
+            .addCase(getProfile.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(getProfile.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.firstName = action.payload.body.firstName
+                state.lastName = action.payload.body.lastName
+            })
+            .addCase(getProfile.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.message
+            })            
             .addCase(editProfile.pending, (state) => {
                 state.isLoading = true
             })
@@ -45,8 +72,8 @@ export const userSlice = createSlice({
                 state.isLoading = false
                 state.isSuccess = true
                 console.log(action.payload)
-                state.user.firstName = action.payload
-                state.user.lastName = action.payload
+                state.firstName = action.payload.body.firstName
+                state.lastName = action.payload.body.lastName
             })
             .addCase(editProfile.rejected, (state, action) => {
                 state.isLoading = false

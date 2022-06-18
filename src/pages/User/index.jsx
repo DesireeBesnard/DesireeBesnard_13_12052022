@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import userService from "../../features/user/userService"
-import { reset, editProfile } from "../../features/user/userSlice"
+import {reset} from '../../features/auth/authSlice'
+import { getProfile, editProfile } from "../../features/user/userSlice"
 import './style.css'
 
 function User() {
@@ -10,35 +10,33 @@ function User() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-
+  const { user } = useSelector( state => state.auth )
+  const {firstName} = useSelector( state => state.user )
+  const { lastName } = useSelector( state => state.user )
   let userData = {
-    firstName: firstName,
-    lastName: lastName
+    firstName : "",
+    lastName: ""
   }
 
-  //redirect if user not connected
-  const { user } = useSelector(
-    (state) => state.auth
-  )
-
   useEffect(() => {
+
+    //redirect if user not connected
     if (!user) {
       navigate("/")
       return
     }
 
-    userService.getProfile()
+    /*userService.getProfile()
       .then(response => {
         let user = JSON.parse(localStorage.getItem("user"))
-        setFirstName(response.data.body.firstName)
-        setLastName(response.data.body.lastName)
-        user['firstName'] = firstName
-        user['lastName'] = response.data.body.lastName
+        //setFirstName(response.data.body.firstName)
+        //setLastName(response.data.body.lastName)
+        //user['firstName'] = firstName
+        //user['lastName'] = response.data.body.lastName
         localStorage.setItem("user", JSON.stringify(user))
-      })
-  }, [navigate, user, firstName, lastName])
+      })*/
+    dispatch(getProfile())
+  }, [dispatch, navigate, user])
 
   const showEditForm = () => {
     const displayName = document.querySelector('.display-name')
@@ -69,6 +67,8 @@ function User() {
         showEditForm()
       })*/
       dispatch(editProfile(userData))
+      console.log("J'ai édité normalement")
+      showEditForm()
       dispatch(reset())
   }
 

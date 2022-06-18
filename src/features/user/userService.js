@@ -5,24 +5,24 @@ const API_URL = "http://localhost:3001/api/v1/user"
 
 const getProfile = async() => {
 
-    const response = axios({
+    const response = await axios({
         method: 'post',
         url: API_URL + "/profile",
         headers: authHeader()
     })
 
-    return await response
+    return response.data
 
 }
 
 const editProfile = async (userData) => {
-    const response = axios.put(`${API_URL}/profile`, {
+    const response = await axios.put(`${API_URL}/profile`, {
         "firstName": userData.firstName,
         "lastName": userData.lastName
     }, {
         headers: authHeader()
     })
-    return await response.data
+    return response.data
 }
 
 const userService = {
