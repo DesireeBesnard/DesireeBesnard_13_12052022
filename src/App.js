@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from "./features/auth/authSlice"
+import { resetName } from "./features/user/userSlice"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer'
@@ -17,10 +18,12 @@ function App() {
 
   useEffect(() => {
 
+    // If user doesn't want the Remember Me option, logout on tab close
     const handleTabClose = e => {
       e.preventDefault()
       if (rememberMe === false) {
         dispatch(logout())
+        dispatch(resetName())
       }
     }
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 import { login, reset, persist } from "../../features/auth/authSlice"
 import './style.css'
 
-function SignIn(props) {
+function SignIn() {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -67,7 +67,7 @@ function SignIn(props) {
           </div>
 
           <div className="input-remember">
-            <input type="checkbox" id="remember-me" onChange={rememberChecked}/>
+            <input type="checkbox" id="remember-me" defaultChecked={true} onChange={rememberChecked}/>
             <label htmlFor="remember-me">Remember me</label>
           </div>
 

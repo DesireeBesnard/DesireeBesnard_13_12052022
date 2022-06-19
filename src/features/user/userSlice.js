@@ -38,6 +38,10 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
+        resetName: state => {
+            state.firstName = ""
+            state.lastName = ""
+        },
         reset: state => {
             state.isLoading = false
             state.isError = false
@@ -80,5 +84,5 @@ export const userSlice = createSlice({
     }
 })
 
-export const { reset } = userSlice.actions
+export const { resetName, reset } = userSlice.actions
 export default userSlice.reducer

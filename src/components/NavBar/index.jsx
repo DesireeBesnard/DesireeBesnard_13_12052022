@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout, reset } from "../../features/auth/authSlice"
-import { getProfile } from '../../features/user/userSlice'
+import { resetName, getProfile } from '../../features/user/userSlice'
 import '../../App.css'
 import './style.css'
 
@@ -21,6 +21,7 @@ function NavBar() {
 
     const onLogout = () => {
         dispatch(logout())
+        dispatch(resetName())
         dispatch(reset())
         navigate("/")
     }

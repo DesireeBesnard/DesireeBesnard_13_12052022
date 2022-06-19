@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import {reset} from '../../features/auth/authSlice'
-import { getProfile, editProfile } from "../../features/user/userSlice"
+import { reset } from '../../features/auth/authSlice'
+import { editProfile } from "../../features/user/userSlice"
 import './style.css'
 
 function User() {
@@ -13,6 +13,7 @@ function User() {
   const { user } = useSelector( state => state.auth )
   const {firstName} = useSelector( state => state.user )
   const { lastName } = useSelector( state => state.user )
+  //data sent for profile edition
   let userData = {
     firstName : "",
     lastName: ""
